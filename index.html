@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cube Movements</title>    
+    <style>
+
+    body { font-family: sans-serif; padding: 0 32px; width: 640px; margin: 8px auto; background-color: #eee; }
+    div#canvas { border: 2px solid black; margin: 8px 0; background-color: #fff;} 
+    </style>
+    <script src="three.min.js"></script>
+    <script src="orbitControls.js"></script>
+    <script>
+    var control = null;
+    
+    function update( dt ) {
+      control.update( dt );
+    }
+    
+    window.onload = function() {
+
+        var renderer = new THREE.WebGLRenderer({ alpha: true });
+        var width = 640;
+        var height = 480;
+        renderer.setSize( width, height );
+        renderer.setClearColor( 0xFFFFFF, 0);
+        
+        var div = document.getElementById('canvas')
+        div.appendChild( renderer.domElement );
+
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(
+            70,
+            width / height,
+            0.1,
+            10000
+        );
+        //var camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000 );
+        camera.position.set( 0, 10, 10 );
+        camera.lookAt( scene.position );
+        
+        control = new THREE.OrbitControls( camera , div );
+
+        var geometry = new THREE.CubeGeometry( 5, 5, 5 );
+        var material = new THREE.MeshLambertMaterial( { color: 0xFF0000 } );
+        var mesh = new THREE.Mesh( geometry, material );
+        scene.add( mesh );
+
+        control.scene = scene;
+
+        var light = new THREE.PointLight( 0xFFFF00 );
+        light.position.set( 10, 0, 10 );
+        scene.add( light );
+
+        var dt = 10;
+        var renderFunc = function() {
+          update(dt);
+          renderer.render(scene,camera);
+        };
+      
+        setInterval(renderFunc,dt);
+
+    };
+    </script>
+</head>
+<body>
+<h3>Cube Movements</h3>
+<div id=canvas></div>
+
+    <p><strong>Mission:</strong></p>
+    <p> --------------------------------------------------------------------------------------------</p>
+    <p> --------------------------------------------------------------------------------------------</p>
+    <p> --------------------------------------------------------------------------------------------</p>
+    <p> Use mouse wheel to zoom in and out where cursor is.</p>
+    <p> Use left click to rotate.</p>
+    <p> Notice mouse wheel also used for scrolling the page when outside our cube container.</p>
+    <p> --------------------------------------------------------------------------------------------</p>
+    <p> --------------------------------------------------------------------------------------------</p>
+    <p> --------------------------------------------------------------------------------------------</p>
+
+</body>
+</html>
